@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Data } from '@/pages/api/profile'
+import profile, { Profile } from '@/pages/services/profile'
 
 
-async function getProfile(): Promise<Data> {
+async function getProfile(): Promise<Profile> {
   const profileResponse = await fetch('/api/profile')
   if (!profileResponse.ok) {
     throw new Error('Failed to fetch data')
@@ -11,8 +11,8 @@ async function getProfile(): Promise<Data> {
 }
 
 
-export default function Profile({ initProfile }: { initProfile?: Data }) {
-  const [ profile, setProfile ] = useState<Data>(initProfile)
+export default function ProfilePage({ initProfile }: { initProfile?: Profile }) {
+  const [ profile, setProfile ] = useState<Profile>(initProfile)
 
   useEffect(() => {
     getProfile().then(setProfile)
@@ -34,9 +34,6 @@ export default function Profile({ initProfile }: { initProfile?: Data }) {
 
 export const getServerSideProps = async () => ({
   props: {
-    initProfile: {
-      name: 'Nemam',
-      bio: 'Lorem ipsum dolor sit amet'
-    }
+    initProfile: await profile()
   }
 })
