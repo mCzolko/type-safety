@@ -1,14 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import profile, { Profile } from '@/pages/services/profile'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-export type Data = {
-  name: string
-  bio: string
-}
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Profile>
 ) {
-  res.status(200).json({ name: 'John Doe', bio: 'I\'m a person.' })
+  res.status(200).json(await profile())
 }
